@@ -4,20 +4,30 @@ import tkinter
 Keyboard_App = tkinter.Tk()
 Keyboard_App.title("On Screen Keyboard")
 Keyboard_App.resizable(0,0)
+shift_active=False
 
-def select(value):
+def select(value):#made shift work, remove character works now and you add character at cursor position
+    global shift_active
     if value == "<-":
-        entry2 = entry.get()
-        pos = entry2.find("")
-        pos2=entry2[pos:]
-        entry.delete(pos2, tkinter.END)
+        entry_text = entry.get()
+        
+        
+        entry.delete(entry.index(INSERT)-1,entry.index(INSERT))#prolly have to insert try catch for 0-1
     elif value == 'SPACE':
         entry.insert(tkinter.END, ' ')
     elif value == 'TAB':
         entry.insert(tkinter.END, '     ')
+    elif value== "SHIFT":
+        shift_active= not shift_active
+        
     else:
-        entry.insert(tkinter.END, value)
-
+        if value.isalpha:
+            if shift_active:
+                entry.insert(tkinter.INSERT, value.upper())
+            else:
+                entry.insert(tkinter.INSERT,value.lower())
+        else:
+            entry.insert(tkinter.INSERT,value)
 
 buttons=['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '<-', '7', '8', '9', '-', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '[', ']', '4', '5', '6', '+',
          'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'SHIFT', '1', '2', '3', '?', 'SPACE']
